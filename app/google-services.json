@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "405017319349",
+    "project_id": "routinereset-46568",
+    "storage_bucket": "routinereset-46568.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:405017319349:android:3f3c4bd6225875e3902bfc",
+        "android_client_info": {
+          "package_name": "uk.ac.tees.mad.routinereset"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwVoG6cJcEj6spkohgh3LguirW3TgbxVs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

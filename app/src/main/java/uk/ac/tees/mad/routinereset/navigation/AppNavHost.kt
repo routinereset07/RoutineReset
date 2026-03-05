@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import uk.ac.tees.mad.routinereset.ui.homescreen.HomeScreen
 import uk.ac.tees.mad.routinereset.ui.loginscreen.LoginScreen
 import uk.ac.tees.mad.routinereset.ui.signupscreen.SignUpScreen
 
@@ -24,7 +25,11 @@ fun AppNavHost(
                     navController.navigate(NavRoutes.SignUp.route)
                 },
                 navigateToHome = {
-                    navController.navigate(NavRoutes.Home.route)
+                    navController.navigate(NavRoutes.Home.route){
+                        popUpTo(NavRoutes.Login.route){
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
@@ -36,14 +41,18 @@ fun AppNavHost(
                     navController.popBackStack()
                 },
                 onNavHomeClick = {
-                    navController.navigate(NavRoutes.Home.route)
+                    navController.navigate(NavRoutes.Home.route){
+                        popUpTo(NavRoutes.SignUp.route){
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
         composable(
             route = NavRoutes.Home.route
         ){
-//for the home screen---->>>>
+            HomeScreen()
         }
     }
 }

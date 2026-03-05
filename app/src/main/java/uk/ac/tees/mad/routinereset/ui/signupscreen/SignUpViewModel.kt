@@ -1,17 +1,24 @@
 package uk.ac.tees.mad.routinereset.ui.signupscreen
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import uk.ac.tees.mad.routinereset.di.AppModule
+import uk.ac.tees.mad.routinereset.domain.model.AuthResult
 
-class SignUpViewModel : ViewModel() {
+class SignUpViewModel() : ViewModel() {
     private val _signUpUiState = MutableStateFlow(SignUpUiState())
     val signUpUiState = _signUpUiState.asStateFlow()
 
+    private val authRepository = AppModule.authRepository
+
     fun onFullNameChange(fullName : String){
         val isValid = isFormValid(
-            _signUpUiState.value.fullName,
+          //  _signUpUiState.value.fullName,
             _signUpUiState.value.email,
             _signUpUiState.value.password,
             _signUpUiState.value.confirmPassword
@@ -26,8 +33,8 @@ class SignUpViewModel : ViewModel() {
 
     fun onEmailChange(email : String){
         val isValid = isFormValid(
-            _signUpUiState.value.fullName,
-            _signUpUiState.value.email,
+           // _signUpUiState.value.fullName,
+            email,
             _signUpUiState.value.password,
             _signUpUiState.value.confirmPassword
         )
@@ -41,22 +48,25 @@ class SignUpViewModel : ViewModel() {
 
     fun onPasswordChange(password : String){
         val isValid = isFormValid(
-            _signUpUiState.value.fullName,
+          //  _signUpUiState.value.fullName,
             _signUpUiState.value.email,
-            _signUpUiState.value.password,
+            password,
             _signUpUiState.value.confirmPassword
         )
         _signUpUiState.update {
-            it.copy(password = password)
+            it.copy(password = password,
+                isSignUpEnabled = isValid,
+                error = null
+            )
         }
     }
 
     fun onConfirmPasswordChange(confirmPassword : String){
         val isValid = isFormValid(
-            _signUpUiState.value.fullName,
+          //  _signUpUiState.value.fullName,
             _signUpUiState.value.email,
             _signUpUiState.value.password,
-            _signUpUiState.value.confirmPassword
+            confirmPassword
         )
 
         _signUpUiState.update {
@@ -75,26 +85,55 @@ class SignUpViewModel : ViewModel() {
         }
     }
 
-    fun signUp(){
+    fun signUp() {
+        val state = _signUpUiState.value
+        _signUpUiState.update {
+            it.copy(isLoading = true, error = null)
+        }
+        viewModelScope.launch {
+            val result = authRepository.signup(
+                state.email,
+                state.password
+            )
+            Log.d("SignUp","$result")
 
+            when(result){
+                is AuthResult.Error -> {
+                    _signUpUiState.update {
+                        it.copy(
+                            isLoading = false,
+                            error = result.message
+                        )
+                    }
+                }
+                is AuthResult.Success -> {
+                    _signUpUiState.update {
+                        it.copy(
+                            isLoading = false,
+                            success = true
+                        )
+                    }
+                }
+            }
+        }
+    }
+    fun resetSuccess() {
+        _signUpUiState.update {
+            it.copy(success = false)
+        }
     }
 
     private fun isFormValid(
-        name: String,
+       // name: String,
         email: String,
         password: String,
         confirmPassword: String
     ): Boolean {
-        if(name.isBlank()) return false
+       // if(name.isBlank()) return false
         if (email.isBlank()) return false
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) return false
         if (password.length < 8) return false
         if (password != confirmPassword) return false
-
         return true
     }
-
-
-
-
 }

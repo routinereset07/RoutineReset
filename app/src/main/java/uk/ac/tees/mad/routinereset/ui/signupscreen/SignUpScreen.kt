@@ -15,6 +15,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -37,6 +38,13 @@ fun SignUpScreen(
     onNavHomeClick:()-> Unit,
 ){
     val uiState by signUpViewModel.signUpUiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(uiState.success) {
+        if (uiState.success) {
+            onNavHomeClick()
+            signUpViewModel.resetSuccess()
+        }
+    }
 
     SignUpComponent(onNavBackClick = onNavBackClick,
         fullName = uiState.fullName,
