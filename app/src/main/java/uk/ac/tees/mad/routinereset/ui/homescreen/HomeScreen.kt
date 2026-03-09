@@ -1,6 +1,5 @@
 package uk.ac.tees.mad.routinereset.ui.homescreen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,15 +21,19 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import uk.ac.tees.mad.routinereset.R
 import uk.ac.tees.mad.routinereset.domain.model.Routine
 import uk.ac.tees.mad.routinereset.domain.model.Task
@@ -38,7 +41,14 @@ import uk.ac.tees.mad.routinereset.ui.homescreen.component.HomeScreenTopBar
 import uk.ac.tees.mad.routinereset.ui.homescreen.component.ProgressCard
 import uk.ac.tees.mad.routinereset.ui.homescreen.component.RoutineCard
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    onEditRoutineClick: () -> Unit
+) {
+  var isMorningRoutineExpanded by remember { mutableStateOf(false) }
+  var isEveningRoutineExpanded by remember { mutableStateOf(false) }
+
+
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -86,11 +96,13 @@ fun HomeScreen() {
             )
 
             Text(
-                text = "6 Task",
+                text = "view all",
                 modifier = Modifier
-                    .weight(1f),
+                    .weight(1f)
+                    .clickable {
+                        isMorningRoutineExpanded = !isMorningRoutineExpanded
+                    },
                 textAlign = TextAlign.End
-
             )
         }
             RoutineCard(
@@ -107,7 +119,11 @@ fun HomeScreen() {
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = 16.dp),
+                isExpanded = isMorningRoutineExpanded,
+                onCheckBoxClick = {
+
+                }
             )
 
             Spacer(
@@ -138,10 +154,14 @@ fun HomeScreen() {
                 )
 
                 Text(
-                    text = "6 Task",
+                    text = "view all",
                     modifier = Modifier
-                        .weight(1f),
+                        .weight(1f)
+                        .clickable {
+                           isEveningRoutineExpanded = !isEveningRoutineExpanded
+                        },
                     textAlign = TextAlign.End
+
 
                 )
             }
@@ -159,7 +179,11 @@ fun HomeScreen() {
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = 16.dp),
+                isExpanded = isEveningRoutineExpanded,
+                onCheckBoxClick = {
+
+                }
             )
         }
 
@@ -169,9 +193,7 @@ fun HomeScreen() {
                 .align(Alignment.BottomEnd)
                 .systemBarsPadding()
                 .padding(16.dp),
-            onClick = {
-                //
-            }
+            onClick = onEditRoutineClick
         )
     }
 }
@@ -185,7 +207,6 @@ fun AddRoutineButton(
 ) {
     Card(
         modifier = modifier
-            //.fillMaxWidth()
             .clickable { onClick() },
         shape = RoundedCornerShape(32.dp),
         elevation = CardDefaults.cardElevation(
@@ -207,7 +228,7 @@ fun AddRoutineButton(
             )
 
             Text(
-                text = "Add Routine",
+                text = "Manage Routine",
                 color = MaterialTheme.colorScheme.onPrimary,
                 fontWeight = FontWeight.SemiBold
             )
@@ -220,5 +241,9 @@ fun AddRoutineButton(
 @Composable
 @Preview(showBackground = true)
 fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreen(
+        onEditRoutineClick = {
+
+        }
+    )
 }

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import uk.ac.tees.mad.routinereset.ui.EditRoutineScreen.EditRoutineScreen
 import uk.ac.tees.mad.routinereset.ui.homescreen.HomeScreen
 import uk.ac.tees.mad.routinereset.ui.loginscreen.LoginScreen
 import uk.ac.tees.mad.routinereset.ui.signupscreen.SignUpScreen
@@ -52,7 +53,22 @@ fun AppNavHost(
         composable(
             route = NavRoutes.Home.route
         ){
-            HomeScreen()
+            HomeScreen(
+                onEditRoutineClick = {
+                    navController.navigate(NavRoutes.EditRoutine.route)
+                }
+            )
+        }
+
+
+        composable(
+            route = NavRoutes.EditRoutine.route
+        ){
+            EditRoutineScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
