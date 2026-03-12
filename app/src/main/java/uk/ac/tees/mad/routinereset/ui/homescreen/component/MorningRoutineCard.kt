@@ -20,24 +20,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import uk.ac.tees.mad.routinereset.domain.model.Routine
-import uk.ac.tees.mad.routinereset.domain.model.Task
+import uk.ac.tees.mad.routinereset.data.local.RoutineTaskEntity
 
 
 @Composable
 fun RoutineCard(
-    routine: Routine,
+    routine: List<RoutineTaskEntity>,
     modifier: Modifier,
-    isExpanded : Boolean,
-    onCheckBoxClick: (String) -> Unit
+    isExpanded: Boolean,
+    onCheckBoxClick: (Int, Int, Boolean) -> Unit
 ) {
 
     val visibleTask = if (isExpanded) {
-        routine.tasks
+       routine
     } else {
-        routine.tasks.filterNot { it.isCompleted }.take(3)
+       routine.filter {
+          ! it.isCompleted
+       }.take(3)
     }
 
     Column(
@@ -61,8 +61,8 @@ fun RoutineCard(
 @Composable
 fun TaskCard(
     modifier: Modifier,
-    task: Task,
-    onCheckBoxClick: (String) -> Unit
+    task: RoutineTaskEntity,
+    onCheckBoxClick: (Int, Int, Boolean) -> Unit
 ) {
     Card(
         modifier = modifier,
@@ -98,7 +98,9 @@ fun TaskCard(
                     )
                     .clickable {
                         onCheckBoxClick(
-                            task.id
+                            task.taskId,
+                            task.routineId,
+                            !task.isCompleted
                         )
                     }
             )
@@ -107,32 +109,6 @@ fun TaskCard(
 }
 
 
-@Composable
-@Preview(showBackground = true)
-fun RoutineCardPreview() {
-    RoutineCard(
-        routine = Routine(
-            id = "1",
-            name = "Morning Routine",
-            description = "Routine for the morning",
-            tasks = listOf(
-                Task(
-                    id = "1",
-                    title = "Wake up",
-                    isCompleted = true
-                ),
-                Task(
-                    id = "2",
-                    title = "Eat breakfast",
-                    isCompleted = true
-                )
-            )
-        ),
-        modifier = Modifier,
-        isExpanded = true,
-        onCheckBoxClick = {}
-    )
-}
 
 
 

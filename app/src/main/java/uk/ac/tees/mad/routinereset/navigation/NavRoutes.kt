@@ -6,4 +6,6 @@ sealed class NavRoutes (val route: String) {
     object Home : NavRoutes("home")
     object EditRoutine : NavRoutes("editRoutine")
 
+    object Setting : NavRoutes("setting")
+
 }

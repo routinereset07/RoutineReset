@@ -64,4 +64,9 @@ class RoutineRepositoryImpl(
         //local
         local.updateTask(taskId, title, description)
     }
+
+    override suspend fun fetchAllTasks(){
+        val tasks = remote.fetchAllTasks()
+        local.insertAllTask(tasks)
+    }
 }

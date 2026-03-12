@@ -46,4 +46,28 @@ class RoutineRemoteDataSource(
             )
             .await()
     }
+
+    /// for the first time user log in and fetch then after log in out and comes
+    suspend fun fetchAllTasks(): List<RoutineTaskEntity> {
+        return fetchMorningTask() + fetchEveningTask()
+    }
+
+    private suspend fun fetchMorningTask(): List<RoutineTaskEntity>{
+        return firestore
+            .collection("users")
+            .document(uid())
+            .collection("morning")
+            .get()
+            .await()
+            .toObjects(RoutineTaskEntity::class.java)
+    }
+    private suspend fun fetchEveningTask():List<RoutineTaskEntity>{
+        return firestore.collection("users")
+            .document(uid())
+            .collection("evening")
+            .get()
+            .await()
+            .toObjects(RoutineTaskEntity::class.java)
+    }
+
 }

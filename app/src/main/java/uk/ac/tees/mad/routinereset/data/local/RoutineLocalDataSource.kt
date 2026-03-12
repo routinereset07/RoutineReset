@@ -5,10 +5,10 @@ import kotlinx.coroutines.flow.Flow
 class RoutineLocalDataSource(
     private val routineDao: RoutineDao
 ) {
-    suspend fun observeAllTasks(): Flow<List<RoutineTaskEntity>> =
+     fun observeAllTasks(): Flow<List<RoutineTaskEntity>> =
         routineDao.getAllRoutineTasks()
 
-    suspend fun observeTasksByRoutine(routineId: Int): Flow<List<RoutineTaskEntity>> =
+     fun observeTasksByRoutine(routineId: Int): Flow<List<RoutineTaskEntity>> =
         routineDao.getRoutineTasks(routineId)
 
     suspend fun getTaskById(taskId: Int): RoutineTaskEntity? =
@@ -25,4 +25,7 @@ class RoutineLocalDataSource(
 
     suspend fun updateTask(taskId: Int, title: String, description: String) =
         routineDao.updateTask(taskId, title, description)
+
+    suspend fun insertAllTask(tasks: List<RoutineTaskEntity>) =
+        routineDao.insertAllRoutineTasks(tasks)
 }

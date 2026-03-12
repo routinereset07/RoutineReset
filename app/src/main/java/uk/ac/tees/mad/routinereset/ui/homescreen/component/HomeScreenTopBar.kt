@@ -4,15 +4,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,7 +23,8 @@ import androidx.compose.ui.unit.sp
 fun HomeScreenTopBar(
     modifier : Modifier,
     appName : String,
-    date : String
+    date : String,
+    onSettingClick:()-> Unit
 ){
     Row(
         modifier = modifier,
@@ -46,7 +44,7 @@ fun HomeScreenTopBar(
 
         IconButton(onClick = {}) {
             Icon(
-                imageVector = Icons.Default.Person,
+                imageVector = Icons.Default.Settings,
                 contentDescription = "profile"
             )
         }
@@ -63,6 +61,7 @@ fun HomeScreenTopBarPreview(){
     HomeScreenTopBar(
         modifier = Modifier,
         appName = "RoutineReset",
-        date = "12/2/2024"
+        date = "12/2/2024",
+        {}
     )
 }

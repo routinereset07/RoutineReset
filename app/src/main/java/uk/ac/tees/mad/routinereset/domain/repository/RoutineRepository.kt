@@ -23,4 +23,6 @@ interface RoutineRepository {
         title: String,
         description: String
     )
+
+    suspend fun fetchAllTasks()
 }

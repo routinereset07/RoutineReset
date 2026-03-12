@@ -56,8 +56,15 @@ fun AppNavHost(
             HomeScreen(
                 onEditRoutineClick = {
                     navController.navigate(NavRoutes.EditRoutine.route)
+                },
+                onSettingClick = {
+                    navController.navigate(NavRoutes.Setting.route)
                 }
             )
+        }
+
+        composable(NavRoutes.Setting.route){
+
         }
 
 

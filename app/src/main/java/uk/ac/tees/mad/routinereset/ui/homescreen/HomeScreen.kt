@@ -22,31 +22,28 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import uk.ac.tees.mad.routinereset.R
-import uk.ac.tees.mad.routinereset.domain.model.Routine
-import uk.ac.tees.mad.routinereset.domain.model.Task
 import uk.ac.tees.mad.routinereset.ui.homescreen.component.HomeScreenTopBar
 import uk.ac.tees.mad.routinereset.ui.homescreen.component.ProgressCard
 import uk.ac.tees.mad.routinereset.ui.homescreen.component.RoutineCard
+
 @Composable
 fun HomeScreen(
-    onEditRoutineClick: () -> Unit
+    onEditRoutineClick: () -> Unit,
+    onSettingClick: () -> Unit,
+    homeViewModel : HomeViewModel = viewModel()
 ) {
-  var isMorningRoutineExpanded by remember { mutableStateOf(false) }
-  var isEveningRoutineExpanded by remember { mutableStateOf(false) }
 
+    val uiState by homeViewModel.homeUiState.collectAsStateWithLifecycle()
 
 
     Box(
@@ -62,7 +59,8 @@ fun HomeScreen(
                     .fillMaxWidth()
                     .statusBarsPadding(),
                 appName = "RoutineReset",
-                date = "4/2/2026"
+                date = "4/2/2026",
+                onSettingClick = {}
             )
 
             ProgressCard(
@@ -99,31 +97,19 @@ fun HomeScreen(
                 text = "view all",
                 modifier = Modifier
                     .weight(1f)
-                    .clickable {
-                        isMorningRoutineExpanded = !isMorningRoutineExpanded
+                    .clickable{
+                        homeViewModel.onMorningExpand()
                     },
                 textAlign = TextAlign.End
             )
         }
             RoutineCard(
-                routine = Routine(
-                    id = "1",
-                    name = "Morning Routine",
-                    description = "Routine for the morning",
-                    tasks = listOf(
-                        Task(id = "1", title = "Wake up", isCompleted = true),
-                        Task(id = "2", title = "Eat breakfast", isCompleted = true),
-                        Task(id = "3", title = "Go to work", isCompleted = false),
-                        Task(id = "4", title = "Code", isCompleted = false)
-                    )
-                ),
+                uiState.morningRoutine,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
-                isExpanded = isMorningRoutineExpanded,
-                onCheckBoxClick = {
-
-                }
+                isExpanded = uiState.isMorningRoutineExpanded,
+                onCheckBoxClick = homeViewModel::onToggleRoutine
             )
 
             Spacer(
@@ -158,32 +144,19 @@ fun HomeScreen(
                     modifier = Modifier
                         .weight(1f)
                         .clickable {
-                           isEveningRoutineExpanded = !isEveningRoutineExpanded
+                           homeViewModel.onEveningExpand()
                         },
                     textAlign = TextAlign.End
-
 
                 )
             }
             RoutineCard(
-                routine = Routine(
-                    id = "1",
-                    name = "Evening Routine",
-                    description = "Routine for the morning",
-                    tasks = listOf(
-                        Task(id = "1", title = "Wake up", isCompleted = true),
-                        Task(id = "2", title = "Eat breakfast", isCompleted = true),
-                        Task(id = "3", title = "Go to work", isCompleted = false),
-                        Task(id = "4", title = "Code", isCompleted = false)
-                    )
-                ),
+                uiState.eveningRoutine,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
-                isExpanded = isEveningRoutineExpanded,
-                onCheckBoxClick = {
-
-                }
+                isExpanded = uiState.isEveningRoutineExpanded,
+                onCheckBoxClick = homeViewModel::onToggleRoutine
             )
         }
 
@@ -238,12 +211,14 @@ fun AddRoutineButton(
 
 
 
-@Composable
-@Preview(showBackground = true)
-fun HomeScreenPreview() {
-    HomeScreen(
-        onEditRoutineClick = {
-
-        }
-    )
-}
+//@Composable
+//@Preview(showBackground = true)
+//fun HomeScreenPreview() {
+//    HomeScreen(
+//        onEditRoutineClick = {
+//            //
+//        },
+//        onSettingClick = {},
+//        homeViewModel = viewModel()
+//    )
+//}

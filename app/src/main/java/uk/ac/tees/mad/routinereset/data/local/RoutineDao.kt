@@ -10,16 +10,20 @@ import kotlinx.coroutines.flow.Flow
 interface RoutineDao {
 
     @Query("SELECT * FROM routines WHERE routineId = :routineId")
-    suspend fun getRoutineTasks(routineId: Int): Flow<List<RoutineTaskEntity>>
+    fun getRoutineTasks(routineId: Int): Flow<List<RoutineTaskEntity>>
 
     @Query("SELECT * FROM routines")
-    suspend fun  getAllRoutineTasks(): Flow<List<RoutineTaskEntity>>
+    fun  getAllRoutineTasks(): Flow<List<RoutineTaskEntity>>
 
     @Query("select * FROM routines WHERE taskId = :taskId")
     suspend fun getTaskById(taskId: Int): RoutineTaskEntity
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertRoutineTask(routineTaskEntity: RoutineTaskEntity)
+
+    //for the first time when user log in and fetches then---
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAllRoutineTasks(routineTaskEntities: List<RoutineTaskEntity>)
 
     @Query("DELETE FROM routines WHERE taskId = :taskId")
     suspend fun deleteTaskById(taskId: Int)
@@ -29,7 +33,5 @@ interface RoutineDao {
 
     @Query("UPDATE routines SET title = :title, description = :description WHERE taskId = :taskId")
     suspend fun updateTask(taskId: Int, title: String, description: String)
-
-
 
 }

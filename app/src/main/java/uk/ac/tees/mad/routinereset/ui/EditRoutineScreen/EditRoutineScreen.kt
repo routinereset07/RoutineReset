@@ -15,12 +15,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -36,32 +36,40 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import uk.ac.tees.mad.routinereset.data.local.RoutineTaskEntity
 import uk.ac.tees.mad.routinereset.domain.model.RoutineType
 import uk.ac.tees.mad.routinereset.ui.EditRoutineScreen.component.EditScreenTopBar
 import uk.ac.tees.mad.routinereset.ui.EditRoutineScreen.component.RoutineSelector
 
 @Composable
-fun EditRoutineScreen(onBackClick : () -> Unit){
-    var selectedRoutine by remember { mutableStateOf<RoutineType?>(RoutineType.MORNING) }
-    var showDialog by remember { mutableStateOf(false) }
+fun EditRoutineScreen(onBackClick : () -> Unit,
+                      editViewModel : EditViewModel = viewModel()){
+
+    val uiState by editViewModel.editScreenUiState.collectAsStateWithLifecycle()
 
     Box(
         modifier = Modifier
             .fillMaxSize()
     ){
-        if (showDialog) {
+        if (uiState.showDialog) {
             EditTaskDialog(
                 initialTitle = "Journaling",
                 onSaveClick = { newTitle ->
-                    // save logic
-                    showDialog = false
+                    editViewModel.onSaveNewTask(
+                        newTitle,
+                        routineType = when(uiState.selectedRoutineType){
+                            RoutineType.EVENING -> 2
+                            RoutineType.MORNING -> 1
+                        }
+                    )
                 },
                 onCancelClick = {
-                    showDialog = false
+                    editViewModel.onCancel()
                 }
             )
         }
@@ -81,32 +89,23 @@ fun EditRoutineScreen(onBackClick : () -> Unit){
                 modifier = Modifier.height(8.dp)
             )
             RoutineSelector(
-                selectedRoutine = selectedRoutine ?: RoutineType.MORNING,
-                onRoutineSelected = { selectedRoutine = it }
+                selectedRoutine = uiState.selectedRoutineType,
+                onRoutineSelected = {
+                    editViewModel.onRoutineSelect(it)
+                }
             )
 
             Spacer(
                 modifier = Modifier.height(24.dp)
             )
 
-            val list = when(selectedRoutine){
+            val list = when(uiState.selectedRoutineType){
                 RoutineType.MORNING -> {
-                    listOf(
-                        "good morning",
-                        "read",
-                        "drink",
-                        "fresh"
-                    )
+                    uiState.morningRoutine
                 }
                 RoutineType.EVENING -> {
-                    listOf(
-                        "gym",
-                        "cardio",
-                        "cook",
-                        "bath"
-                    )
+                   uiState.eveningRoutine
                 }
-                else -> null
             }
 
 
@@ -118,14 +117,19 @@ fun EditRoutineScreen(onBackClick : () -> Unit){
                 ),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ){
-                items(list?.size ?:0){ it->
+                items(list){ it->
                     TaskItem(
-                        task = list?.get(it) ?: "",
+                        task = it,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp),
                         onEditClick = {},
-                        onDeleteClick = {}
+                        onDeleteClick = {it->
+                            editViewModel.onDeleteClick(
+                                it.taskId,
+                                it.routineId
+                            )
+                        }
                     )
                 }
             }
@@ -133,7 +137,8 @@ fun EditRoutineScreen(onBackClick : () -> Unit){
 
         Button(
             onClick= {
-                showDialog = true
+                editViewModel
+                    .onAddNewTask()
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -159,9 +164,9 @@ fun EditRoutineScreen(onBackClick : () -> Unit){
 
 @Composable
 fun TaskItem(
-    onDeleteClick:()-> Unit,
+    onDeleteClick:(RoutineTaskEntity)-> Unit,
     onEditClick: () -> Unit,
-    task : String,
+    task : RoutineTaskEntity,
     modifier: Modifier = Modifier
 ){
     Card(
@@ -185,27 +190,29 @@ fun TaskItem(
                 imageVector = Icons.Default.Delete,
                 contentDescription = null,
                 modifier = Modifier.clickable{
-                    onDeleteClick()
+                    onDeleteClick(
+                        task
+                    )
                 }
             )
             Spacer(
                 modifier = Modifier.width(4.dp)
             )
             Text(
-                text = task,
+                text = task.title,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.weight(1f)
             )
             Spacer(
                 modifier = Modifier.width(4.dp)
             )
-            Icon(
-                imageVector = Icons.Default.Edit,
-                contentDescription = null,
-                modifier = Modifier.clickable{
-                    onEditClick()
-                }
-            )
+//            Icon(
+//                imageVector = Icons.Default.Edit,
+//                contentDescription = null,
+//                modifier = Modifier.clickable{
+//                    onEditClick()
+//                }
+//            )
         }
     }
 }
@@ -215,7 +222,7 @@ fun TaskItem(
 
 @Composable
 fun EditTaskDialog(
-    initialTitle: String,
+    initialTitle: String = "",
     onSaveClick: (String) -> Unit,
     onCancelClick: () -> Unit
 ) {
@@ -238,13 +245,12 @@ fun EditTaskDialog(
                     .padding(24.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-
                 // Title
-                Text(
-                    text = "Edit Task Name",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.SemiBold
-                )
+//                Text(
+//                    text = "Task Name",
+//                    style = MaterialTheme.typography.titleLarge,
+//                    fontWeight = FontWeight.SemiBold
+//                )
 
                 // Label
                 Text(
@@ -292,8 +298,6 @@ fun EditTaskDialog(
         }
     }
 }
-
-
 
 @Composable
 @Preview(showBackground = true)
