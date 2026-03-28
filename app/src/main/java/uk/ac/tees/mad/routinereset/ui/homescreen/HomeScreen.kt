@@ -58,9 +58,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .statusBarsPadding(),
-                appName = "RoutineReset",
-                date = "4/2/2026",
-                onSettingClick = {}
+                onSettingClick = onSettingClick
             )
 
             ProgressCard(

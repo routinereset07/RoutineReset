@@ -41,7 +41,7 @@ class HomeViewModel(private val routineRepository: RoutineRepository = AppModule
 
 
 
-    fun onToggleRoutine(taskId:Int,
+    fun onToggleRoutine(taskId: String,
                         routineId : Int,
                         isCompleted: Boolean){
         viewModelScope.launch {

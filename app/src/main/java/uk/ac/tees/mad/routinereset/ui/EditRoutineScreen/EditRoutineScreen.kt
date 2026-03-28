@@ -30,6 +30,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -99,15 +100,14 @@ fun EditRoutineScreen(onBackClick : () -> Unit,
                 modifier = Modifier.height(24.dp)
             )
 
-            val list = when(uiState.selectedRoutineType){
-                RoutineType.MORNING -> {
-                    uiState.morningRoutine
-                }
-                RoutineType.EVENING -> {
-                   uiState.eveningRoutine
+            val list by remember(uiState) {
+                derivedStateOf {
+                    when (uiState.selectedRoutineType) {
+                        RoutineType.MORNING -> uiState.morningRoutine
+                        RoutineType.EVENING -> uiState.eveningRoutine
+                    }
                 }
             }
-
 
             LazyColumn (
                 modifier = Modifier.weight(1f),

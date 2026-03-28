@@ -15,21 +15,22 @@ class RoutineRemoteDataSource(
         firestore.collection("users")
             .document(uid())
             .collection(if(task.routineId == 1) "morning" else "evening")
-            .add(task)
+            .document(task.taskId)
+            .set(task)
             .await()
     }
 
-    suspend fun deleteTask(taskId: Int,routineId: Int) {
+    suspend fun deleteTask(taskId: String,routineId: Int) {
         firestore.collection("users")
             .document(uid())
             .collection(if(routineId == 1) "morning" else "evening")
-            .document(taskId.toString())
+            .document(taskId)
             .delete()
             .await()
     }
 
     suspend fun updateTask(
-        taskId: Int,
+        taskId: String,
         routineId: Int,
         title: String,
         description: String
@@ -37,7 +38,7 @@ class RoutineRemoteDataSource(
         firestore.collection("users")
             .document(uid())
             .collection(if(routineId == 1) "morning" else "evening")
-            .document(taskId.toString())
+            .document(taskId)
             .update(
                 mapOf(
                     "title" to title,

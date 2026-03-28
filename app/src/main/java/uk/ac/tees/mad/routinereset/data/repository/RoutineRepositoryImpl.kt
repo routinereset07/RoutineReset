@@ -9,7 +9,8 @@ import uk.ac.tees.mad.routinereset.domain.repository.RoutineRepository
 
 class RoutineRepositoryImpl(
     private val local: RoutineLocalDataSource,
-    private val remote: RoutineRemoteDataSource
+    private val remote: RoutineRemoteDataSource,
+
 ) : RoutineRepository {
     override suspend fun observeRoutineTasks(routineId: Int): Flow<List<RoutineTaskEntity>> {
         return local.observeTasksByRoutine(routineId)
@@ -35,7 +36,7 @@ class RoutineRepositoryImpl(
     }
 
     override suspend fun deleteTask(
-        taskId: Int,
+        taskId: String,
         routineId: Int
     ) {
         remote.deleteTask(taskId,routineId)
@@ -43,7 +44,7 @@ class RoutineRepositoryImpl(
     }
 
     override suspend fun updateTaskCompletion(
-        taskId: Int,
+        taskId: String,
         routineId: Int,
         isCompleted: Boolean
     ) {
@@ -51,7 +52,7 @@ class RoutineRepositoryImpl(
     }
 
     override suspend fun updateTask(
-        taskId: Int,
+        taskId: String,
         routineId: Int,
         title: String,
         description: String
@@ -63,6 +64,14 @@ class RoutineRepositoryImpl(
             description)
         //local
         local.updateTask(taskId, title, description)
+    }
+
+    override suspend fun deleteAllTasks() {
+        local.deleteAllTasks()
+    }
+
+    override suspend fun resetAllTasks() {
+        local.resetAllTasks()
     }
 
     override suspend fun fetchAllTasks(){

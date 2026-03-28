@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import uk.ac.tees.mad.routinereset.ui.EditRoutineScreen.EditRoutineScreen
 import uk.ac.tees.mad.routinereset.ui.homescreen.HomeScreen
 import uk.ac.tees.mad.routinereset.ui.loginscreen.LoginScreen
+import uk.ac.tees.mad.routinereset.ui.settingscreen.SettingScreen
 import uk.ac.tees.mad.routinereset.ui.signupscreen.SignUpScreen
 
 @Composable
@@ -64,9 +65,19 @@ fun AppNavHost(
         }
 
         composable(NavRoutes.Setting.route){
-
+            SettingScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onLogoutClick = {
+                    navController.navigate(NavRoutes.Login.route){
+                        popUpTo(NavRoutes.Setting.route){
+                            inclusive = true
+                        }
+                    }
+                }
+            )
         }
-
 
         composable(
             route = NavRoutes.EditRoutine.route

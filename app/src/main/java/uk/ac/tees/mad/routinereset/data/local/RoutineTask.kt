@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "routines")
 data class RoutineTaskEntity(
     val routineId : Int = 1, // 1 for morning 2 for evening
-    @PrimaryKey val taskId : Int=0,
+    @PrimaryKey val taskId : String = "",
     val title : String = "",
     val description : String = "",
     val isCompleted : Boolean = false

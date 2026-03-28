@@ -1,10 +1,7 @@
 package uk.ac.tees.mad.routinereset.ui.homescreen.component
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
@@ -22,8 +19,6 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun HomeScreenTopBar(
     modifier : Modifier,
-    appName : String,
-    date : String,
     onSettingClick:()-> Unit
 ){
     Row(
@@ -31,18 +26,17 @@ fun HomeScreenTopBar(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ){
-        Column(
-            modifier = Modifier
-                .padding(start = 8.dp)
-        ) {
-            Text(text = appName)
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(text = date,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold)
-        }
 
-        IconButton(onClick = {}) {
+        Text(
+            text = "Routine Reset",
+            modifier = Modifier
+                .padding(start = 16.dp),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold
+        )
+
+
+        IconButton(onClick = onSettingClick) {
             Icon(
                 imageVector = Icons.Default.Settings,
                 contentDescription = "profile"
@@ -53,15 +47,11 @@ fun HomeScreenTopBar(
 
 
 
-
-
 @Composable
 @Preview(showBackground = true)
 fun HomeScreenTopBarPreview(){
     HomeScreenTopBar(
         modifier = Modifier,
-        appName = "RoutineReset",
-        date = "12/2/2024",
         {}
     )
 }

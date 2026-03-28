@@ -11,18 +11,20 @@ interface RoutineRepository {
 
     suspend fun addTask(task: RoutineTaskEntity)
 
-    suspend fun deleteTask(taskId: Int, routineId: Int)
+    suspend fun deleteTask(taskId: String, routineId: Int)
 
-    suspend fun updateTaskCompletion(taskId: Int,
+    suspend fun updateTaskCompletion(taskId: String,
                                      routineId: Int,
                                      isCompleted: Boolean)
 
     suspend fun updateTask(
-        taskId: Int,
+        taskId: String,
         routineId: Int,
         title: String,
         description: String
     )
+    suspend fun  deleteAllTasks()
 
+    suspend fun resetAllTasks()
     suspend fun fetchAllTasks()
 }

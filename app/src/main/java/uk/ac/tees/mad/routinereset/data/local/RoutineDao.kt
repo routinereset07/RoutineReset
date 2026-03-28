@@ -26,12 +26,18 @@ interface RoutineDao {
     suspend fun insertAllRoutineTasks(routineTaskEntities: List<RoutineTaskEntity>)
 
     @Query("DELETE FROM routines WHERE taskId = :taskId")
-    suspend fun deleteTaskById(taskId: Int)
+    suspend fun deleteTaskById(taskId: String)
 
     @Query("UPDATE routines SET isCompleted = :isCompleted WHERE taskId = :taskId")
-    suspend fun updateTaskCompletion(taskId: Int, isCompleted: Boolean)
+    suspend fun updateTaskCompletion(taskId: String, isCompleted: Boolean)
 
     @Query("UPDATE routines SET title = :title, description = :description WHERE taskId = :taskId")
-    suspend fun updateTask(taskId: Int, title: String, description: String)
+    suspend fun updateTask(taskId: String, title: String, description: String)
+
+    @Query("DELETE FROM routines")
+    suspend fun deleteAllTasks()
+
+    @Query("UPDATE routines SET isCompleted = 0")
+    suspend fun resetAllTasks()
 
 }

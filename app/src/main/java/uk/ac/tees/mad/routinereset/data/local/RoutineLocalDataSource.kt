@@ -17,15 +17,21 @@ class RoutineLocalDataSource(
     suspend fun insertTask(task: RoutineTaskEntity) =
         routineDao.insertRoutineTask(task)
 
-    suspend fun deleteTask(taskId: Int) =
+    suspend fun deleteTask(taskId: String) =
         routineDao.deleteTaskById(taskId)
 
-    suspend fun updateTaskCompletion(taskId: Int, isCompleted: Boolean) =
+    suspend fun updateTaskCompletion(taskId: String, isCompleted: Boolean) =
         routineDao.updateTaskCompletion(taskId, isCompleted)
 
-    suspend fun updateTask(taskId: Int, title: String, description: String) =
+    suspend fun updateTask(taskId: String, title: String, description: String) =
         routineDao.updateTask(taskId, title, description)
 
     suspend fun insertAllTask(tasks: List<RoutineTaskEntity>) =
         routineDao.insertAllRoutineTasks(tasks)
+
+    suspend fun deleteAllTasks() =
+        routineDao.deleteAllTasks()
+
+    suspend fun resetAllTasks() =
+        routineDao.resetAllTasks()
 }

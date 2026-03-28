@@ -29,7 +29,7 @@ fun RoutineCard(
     routine: List<RoutineTaskEntity>,
     modifier: Modifier,
     isExpanded: Boolean,
-    onCheckBoxClick: (Int, Int, Boolean) -> Unit
+    onCheckBoxClick: (String, Int, Boolean) -> Unit
 ) {
 
     val visibleTask = if (isExpanded) {
@@ -62,7 +62,7 @@ fun RoutineCard(
 fun TaskCard(
     modifier: Modifier,
     task: RoutineTaskEntity,
-    onCheckBoxClick: (Int, Int, Boolean) -> Unit
+    onCheckBoxClick: (String, Int, Boolean) -> Unit
 ) {
     Card(
         modifier = modifier,

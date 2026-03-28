@@ -10,6 +10,7 @@ import uk.ac.tees.mad.routinereset.data.local.RoutineTaskEntity
 import uk.ac.tees.mad.routinereset.di.AppModule
 import uk.ac.tees.mad.routinereset.domain.model.RoutineType
 import uk.ac.tees.mad.routinereset.domain.repository.RoutineRepository
+import java.util.UUID
 
 class EditViewModel (
     private val routineRepository: RoutineRepository = AppModule.routineRepository
@@ -54,7 +55,7 @@ class EditViewModel (
     }
 
     fun onDeleteClick(
-        taskId: Int,
+        taskId: String,
         routineId: Int
     ) {
         viewModelScope.launch {
@@ -86,10 +87,12 @@ class EditViewModel (
         routineType: Int,
     ) {
         viewModelScope.launch {
+            val id = UUID.randomUUID().toString()
             routineRepository.addTask(
                 RoutineTaskEntity(
                     routineId = routineType,
-                    title = newTask
+                    title = newTask,
+                    taskId = id
                 )
             )
             _editScreenUiState.update {
