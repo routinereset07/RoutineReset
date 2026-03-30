@@ -95,11 +95,9 @@ fun EditRoutineScreen(onBackClick : () -> Unit,
                     editViewModel.onRoutineSelect(it)
                 }
             )
-
             Spacer(
                 modifier = Modifier.height(24.dp)
             )
-
             val list by remember(uiState) {
                 derivedStateOf {
                     when (uiState.selectedRoutineType) {
