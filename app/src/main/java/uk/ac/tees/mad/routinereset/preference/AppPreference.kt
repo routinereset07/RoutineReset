@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 object AppPreference {
-
     private const val PREF_NAME = "app_prefs"
     private const val KEY_FIRST_LAUNCH = "first_launch"
     private const val KEY_NOTIFICATION = "notification_enabled"
@@ -46,6 +45,5 @@ object AppPreference {
         prefs.edit().putBoolean(KEY_NOTIFICATION, enabled).apply()
         _notificationFlow.value = enabled
     }
-
 
 }
