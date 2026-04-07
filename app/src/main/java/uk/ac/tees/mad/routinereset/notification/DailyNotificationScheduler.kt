@@ -1,6 +1,7 @@
 package uk.ac.tees.mad.routinereset.notification
 
 import android.content.Context
+import android.util.Log
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -12,11 +13,13 @@ class DailyNotificationScheduler(
 )
     : NotificationScheduler {
     override fun scheduleDaily() {
+        Log.d("Notification", "scheduleDaily")
         scheduleAt(8, 0, "MORNING_REMINDER")
         scheduleAt(16, 0, "EVENING_REMINDER")
     }
 
     override fun cancel() {
+        Log.d("Notification", "cancel")
         WorkManager.getInstance(context)
             .cancelUniqueWork("MORNING_REMINDER")
 
@@ -25,6 +28,7 @@ class DailyNotificationScheduler(
     }
 
     private fun scheduleAt(hour: Int, minute: Int, tag: String) {
+        Log.d("Notification", "scheduleAt")
         val now = Calendar.getInstance()
         val scheduled = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, hour)
