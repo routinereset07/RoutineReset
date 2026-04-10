@@ -1,4 +1,4 @@
-package uk.ac.tees.mad.routinereset.ui.EditRoutineScreen.component
+package uk.ac.tees.mad.routinereset.ui.RoutineListScreen.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun EditScreenTopBar(
+fun RoutineListScreenTopBar(
     modifier : Modifier,
     onBackClick : () -> Unit
 ) {
@@ -42,7 +42,7 @@ fun EditScreenTopBar(
         }
 
         Text(
-            text = "Edit Routines",
+            text = "Routines",
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.Center,
             fontSize = 16.sp,
@@ -54,7 +54,7 @@ fun EditScreenTopBar(
 @Composable
 @Preview(showBackground = true)
 fun EditScreenTopBarPreview(){
-    EditScreenTopBar(
+    RoutineListScreenTopBar(
         modifier = Modifier,
         onBackClick = {}
     )

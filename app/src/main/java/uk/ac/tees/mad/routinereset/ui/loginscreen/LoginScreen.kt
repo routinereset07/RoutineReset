@@ -14,12 +14,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -79,60 +81,60 @@ private fun LoginScreenComponent(
     success: Boolean,
     navigateToSignup: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 24.dp)
-            .verticalScroll(rememberScrollState())
-            .imePadding() ,
-        verticalArrangement = Arrangement.Center
-    ) {
-
-        LoginHeader()
-
-        Spacer(modifier = Modifier.height(40.dp))
-
-        Label(text = "Email Address")
-        EmailField(email, onEmailChange, Modifier.fillMaxWidth())
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Label(text = "Password")
-        PasswordField(
-            password = password,
-            passwordVisible = passwordVisible,
-            onPasswordChange = onPasswordChange,
-            onToggleVisibility = onPasswordToggle,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Button(
-            enabled = isLoginEnabled,
-            onClick = onLoginClick,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            if (isLoading) {
-                Box(
-                    contentAlignment = Alignment.Center
-                ){
-                    CircularProgressIndicator()
-                }
-                return@Button
-            }
-            else Text("Login")
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "don't have an account? sign up",
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .clickable{
-                    navigateToSignup()
-                },
-            textAlign = TextAlign.Center
-        )
+                .fillMaxSize()
+                .padding(horizontal = 24.dp)
+                .verticalScroll(rememberScrollState())
+                .imePadding(),
+            verticalArrangement = Arrangement.Center
+        ) {
+
+            LoginHeader()
+
+            Spacer(modifier = Modifier.height(40.dp))
+
+            Label(text = "Email Address")
+            EmailField(email, onEmailChange, Modifier.fillMaxWidth())
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Label(text = "Password")
+            PasswordField(
+                password = password,
+                passwordVisible = passwordVisible,
+                onPasswordChange = onPasswordChange,
+                onToggleVisibility = onPasswordToggle,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Button(
+                enabled = isLoginEnabled,
+                onClick = onLoginClick,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Login")
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "don't have an account? sign up",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        navigateToSignup()
+                    },
+                textAlign = TextAlign.Center
+            )
+        }
+
+        if(isLoading){
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
     }
 }
 

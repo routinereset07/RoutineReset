@@ -1,4 +1,4 @@
-package uk.ac.tees.mad.routinereset.ui.EditRoutineScreen
+package uk.ac.tees.mad.routinereset.ui.RoutineListScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,34 +12,42 @@ import uk.ac.tees.mad.routinereset.domain.model.RoutineType
 import uk.ac.tees.mad.routinereset.domain.repository.RoutineRepository
 import java.util.UUID
 
-class EditViewModel (
+class RoutineListViewModel (
     private val routineRepository: RoutineRepository = AppModule.routineRepository
 ): ViewModel() {
-    private val _editScreenUiState = MutableStateFlow(EditScreenUiState())
+    private val _editScreenUiState = MutableStateFlow(RoutineListUiState())
     val editScreenUiState = _editScreenUiState.asStateFlow()
-
 
     init {
         fetchAllTasks()
     }
 
-
     fun fetchAllTasks() {
         viewModelScope.launch {
+
+            _editScreenUiState.update {
+                it.copy(isLoading = true)
+            }
+
             routineRepository
                 .observeAllRoutineTasks()
                 .collect { routines ->
-                    _editScreenUiState.update { it ->
-                        val morningTask = routines.filter { it.routineId == 1 }
-                        val eveningTask = routines.filter { it.routineId == 2 }
+
+                    val morningTask = routines.filter { it.routineId == 1 }
+                    val eveningTask = routines.filter { it.routineId == 2 }
+
+                    _editScreenUiState.update {
                         it.copy(
                             morningRoutine = morningTask,
                             eveningRoutine = eveningTask,
+                            isLoading = false
                         )
                     }
                 }
         }
     }
+
+
 
     fun onRoutineSelect(routine: RoutineType) {
         _editScreenUiState.update {
@@ -48,56 +56,23 @@ class EditViewModel (
             )
         }
     }
-
-    //later---->>>>
-    fun onEditClick() {
-
-    }
-
     fun onDeleteClick(
         taskId: String,
         routineId: Int
     ) {
         viewModelScope.launch {
+            _editScreenUiState.update {
+                it.copy(
+                    isLoading = true
+                )
+            }
             routineRepository.deleteTask(
                 taskId,
                 routineId
             )
-        }
-    }
-
-    fun onAddNewTask() {
-        _editScreenUiState.update {
-            it.copy(
-                showDialog = true
-            )
-        }
-    }
-
-    fun onCancel() {
-        _editScreenUiState.update {
-            it.copy(
-                showDialog = false
-            )
-        }
-    }
-
-    fun onSaveNewTask(
-        newTask: String,
-        routineType: Int,
-    ) {
-        viewModelScope.launch {
-            val id = UUID.randomUUID().toString()
-            routineRepository.addTask(
-                RoutineTaskEntity(
-                    routineId = routineType,
-                    title = newTask,
-                    taskId = id
-                )
-            )
             _editScreenUiState.update {
                 it.copy(
-                    showDialog = false
+                    isLoading = false
                 )
             }
         }

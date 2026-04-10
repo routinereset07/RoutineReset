@@ -9,6 +9,7 @@ import kotlinx.coroutines.tasks.await
 import uk.ac.tees.mad.routinereset.domain.model.AuthResult
 import uk.ac.tees.mad.routinereset.domain.model.UserProfile
 import uk.ac.tees.mad.routinereset.domain.repository.AuthRepository
+import uk.ac.tees.mad.routinereset.preference.AppPreference
 
 class AuthRepositoryImpl (
     private val auth : FirebaseAuth,
@@ -47,7 +48,6 @@ class AuthRepositoryImpl (
 
             // Save user profile in Firestore
             saveUserProfile(userId, email)
-
             AuthResult.Success(userId)
 
         }catch(e : Exception){
@@ -58,6 +58,12 @@ class AuthRepositoryImpl (
     override suspend fun signOut() {
         auth.signOut()
     }
+
+    fun getCurrentUserUid(): String =
+        FirebaseAuth.getInstance().currentUser?.uid
+            ?: throw IllegalStateException("User not logged in")
+
+
 
     private suspend fun saveUserProfile(
         userId: String,

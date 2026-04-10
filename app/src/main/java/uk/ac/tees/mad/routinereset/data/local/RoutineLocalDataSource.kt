@@ -11,7 +11,7 @@ class RoutineLocalDataSource(
      fun observeTasksByRoutine(routineId: Int): Flow<List<RoutineTaskEntity>> =
         routineDao.getRoutineTasks(routineId)
 
-    suspend fun getTaskById(taskId: Int): RoutineTaskEntity? =
+    suspend fun getTaskById(taskId: String): RoutineTaskEntity? =
         routineDao.getTaskById(taskId)
 
     suspend fun insertTask(task: RoutineTaskEntity) =

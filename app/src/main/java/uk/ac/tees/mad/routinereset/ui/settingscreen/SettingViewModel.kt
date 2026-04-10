@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import uk.ac.tees.mad.routinereset.di.AppModule
 import uk.ac.tees.mad.routinereset.domain.repository.RoutineRepository
+import uk.ac.tees.mad.routinereset.notification.NotificationModule
+import uk.ac.tees.mad.routinereset.preference.AppPreference
 
 class SettingViewModel(
     private val firebaseAuth: FirebaseAuth = AppModule.firebaseAuth,
@@ -16,6 +18,15 @@ class SettingViewModel(
 ): ViewModel() {
     private val _settingUiState = MutableStateFlow(SettingUiState())
     val settingUiState: StateFlow<SettingUiState> = _settingUiState
+
+
+    init {
+        _settingUiState.update {
+            it.copy(
+                isNotificationOn = AppPreference.isNotificationEnabled()
+            )
+        }
+    }
 
     fun onLogoutClick(onSuccess:()-> Unit){
         firebaseAuth
@@ -40,12 +51,17 @@ class SettingViewModel(
     }
 
     fun onNotificationClick(value : Boolean){
+        AppPreference.setNotificationEnabled(value)
+        if(value){
+            NotificationModule.notificationScheduler.scheduleDaily()
+        }else{
+            NotificationModule.notificationScheduler.cancel()
+        }
         _settingUiState.update {
             it.copy(
                 isNotificationOn = value
             )
         }
-
     }
 
     fun onSetReminderClick(function: () -> Unit) {

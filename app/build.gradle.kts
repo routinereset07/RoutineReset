@@ -14,7 +14,7 @@ android {
     defaultConfig {
         applicationId = "uk.ac.tees.mad.routinereset"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -70,7 +70,9 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
 
-   // implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation ("androidx.compose.animation:animation:1.6.8")
+
+
 
 
     //room database--
@@ -80,4 +82,7 @@ dependencies {
 
     //workmanager
     implementation(libs.androidx.work.runtime.ktx)
+    //splash screen
+    implementation("androidx.core:core-splashscreen:1.2.0")
+
 }

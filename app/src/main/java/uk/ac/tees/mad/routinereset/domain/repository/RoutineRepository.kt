@@ -7,7 +7,7 @@ interface RoutineRepository {
 
    suspend fun observeRoutineTasks(routineId: Int): Flow<List<RoutineTaskEntity>>
    suspend fun observeAllRoutineTasks(): Flow<List<RoutineTaskEntity>>
-    suspend fun getTaskById(taskId: Int): RoutineTaskEntity?
+    suspend fun getTaskById(taskId: String): RoutineTaskEntity?
 
     suspend fun addTask(task: RoutineTaskEntity)
 
@@ -27,4 +27,5 @@ interface RoutineRepository {
 
     suspend fun resetAllTasks()
     suspend fun fetchAllTasks()
+    suspend fun resetTask()
 }

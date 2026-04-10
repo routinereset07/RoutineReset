@@ -9,6 +9,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
@@ -56,3 +57,73 @@ fun RoutineResetTheme(
         content = content
     )
 }
+
+
+
+//
+//private val LightColorScheme = lightColorScheme(
+//    primary = BluePrimary,
+//    onPrimary = Color.White,
+//
+//    secondary = BluePrimaryLight,
+//    onSecondary = Color.White,
+//
+//    tertiary = BluePrimaryDark,
+//    onTertiary = Color.White,
+//
+//    background = BackgroundLight,
+//    onBackground = TextPrimary,
+//
+//    surface = SurfaceLight,
+//    onSurface = TextPrimary,
+//
+//    surfaceVariant = SurfaceContainer,
+//    onSurfaceVariant = TextSecondary,
+//
+//    outline = BorderLight,
+//)
+//
+//private val DarkColorScheme = darkColorScheme(
+//    primary = BluePrimaryLight,
+//    onPrimary = Color.Black,
+//
+//    secondary = BluePrimary,
+//    onSecondary = Color.Black,
+//
+//    tertiary = BluePrimaryDark,
+//    onTertiary = Color.White,
+//
+//    background = BackgroundDark,
+//    onBackground = TextPrimaryDark,
+//
+//    surface = SurfaceDark,
+//    onSurface = TextPrimaryDark,
+//
+//    surfaceVariant = SurfaceDark,
+//    onSurfaceVariant = TextSecondaryDark,
+//
+//    outline = BorderLight,
+//)
+//
+//@Composable
+//fun RoutineResetTheme(
+//    darkTheme: Boolean = isSystemInDarkTheme(),
+//    dynamicColor: Boolean = false,
+//    content: @Composable () -> Unit
+//) {
+//    val colorScheme = when {
+//        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+//            val context = LocalContext.current
+//            if (darkTheme) dynamicDarkColorScheme(context)
+//            else dynamicLightColorScheme(context)
+//        }
+//        darkTheme -> DarkColorScheme
+//        else -> LightColorScheme
+//    }
+//
+//    MaterialTheme(
+//        colorScheme = colorScheme,
+//        typography = Typography,
+//        content = content
+//    )
+//}

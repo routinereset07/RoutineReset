@@ -1,6 +1,7 @@
 package uk.ac.tees.mad.routinereset
 
 import android.app.Application
+import uk.ac.tees.mad.routinereset.dailyreset.ResetScheduler
 import uk.ac.tees.mad.routinereset.di.AppModule
 import uk.ac.tees.mad.routinereset.notification.NotificationModule
 import uk.ac.tees.mad.routinereset.preference.AppPreference
@@ -10,7 +11,7 @@ class RoutineApplication : Application() {
         super.onCreate()
         AppModule.init(this) //db initialise
         AppPreference.init(this) //preference initialise
-        NotificationModule.init(this) //notification initialise
-
+        NotificationModule.init(this) //notification scheduler
+        ResetScheduler.schedule(this) // reset scheduler
     }
 }

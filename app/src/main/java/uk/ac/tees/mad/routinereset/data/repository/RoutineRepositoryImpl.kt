@@ -1,5 +1,6 @@
 package uk.ac.tees.mad.routinereset.data.repository
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import uk.ac.tees.mad.routinereset.data.local.RoutineLocalDataSource
 import uk.ac.tees.mad.routinereset.data.local.RoutineTaskEntity
@@ -21,7 +22,7 @@ class RoutineRepositoryImpl(
     }
 
     override suspend fun getTaskById(
-        taskId: Int
+        taskId: String
     ): RoutineTaskEntity? {
         return local.getTaskById(taskId)
     }
@@ -32,6 +33,7 @@ class RoutineRepositoryImpl(
         // Firebase (source of truth)
         remote.addTask(task)
         //  Room (cache)
+        Log.d("Repo","$task")
         local.insertTask(task)
     }
 
@@ -68,6 +70,7 @@ class RoutineRepositoryImpl(
 
     override suspend fun deleteAllTasks() {
         local.deleteAllTasks()
+        remote.deleteAllTasks()
     }
 
     override suspend fun resetAllTasks() {
@@ -77,5 +80,9 @@ class RoutineRepositoryImpl(
     override suspend fun fetchAllTasks(){
         val tasks = remote.fetchAllTasks()
         local.insertAllTask(tasks)
+    }
+    override suspend fun resetTask(){
+        local.resetAllTasks()
+        remote.resetAllTask()
     }
 }

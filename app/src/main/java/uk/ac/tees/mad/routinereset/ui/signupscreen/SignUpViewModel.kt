@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import uk.ac.tees.mad.routinereset.di.AppModule
 import uk.ac.tees.mad.routinereset.domain.model.AuthResult
+import uk.ac.tees.mad.routinereset.preference.AppPreference
 
 class SignUpViewModel() : ViewModel() {
     private val _signUpUiState = MutableStateFlow(SignUpUiState())
@@ -96,7 +97,6 @@ class SignUpViewModel() : ViewModel() {
                 state.password
             )
             Log.d("SignUp","$result")
-
             when(result){
                 is AuthResult.Error -> {
                     _signUpUiState.update {
@@ -107,6 +107,8 @@ class SignUpViewModel() : ViewModel() {
                     }
                 }
                 is AuthResult.Success -> {
+                    // make first launch false else will duplicate the data
+                    AppPreference.setFirstLaunchDone()
                     _signUpUiState.update {
                         it.copy(
                             isLoading = false,

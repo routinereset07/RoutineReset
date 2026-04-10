@@ -16,7 +16,7 @@ interface RoutineDao {
     fun  getAllRoutineTasks(): Flow<List<RoutineTaskEntity>>
 
     @Query("select * FROM routines WHERE taskId = :taskId")
-    suspend fun getTaskById(taskId: Int): RoutineTaskEntity
+    suspend fun getTaskById(taskId: String): RoutineTaskEntity
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertRoutineTask(routineTaskEntity: RoutineTaskEntity)

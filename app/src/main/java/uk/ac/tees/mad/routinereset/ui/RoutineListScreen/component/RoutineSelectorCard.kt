@@ -1,4 +1,4 @@
-package uk.ac.tees.mad.routinereset.ui.EditRoutineScreen.component
+package uk.ac.tees.mad.routinereset.ui.RoutineListScreen.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

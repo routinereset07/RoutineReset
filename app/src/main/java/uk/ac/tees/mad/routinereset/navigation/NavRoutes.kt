@@ -8,4 +8,14 @@ sealed class NavRoutes (val route: String) {
 
     object Setting : NavRoutes("setting")
 
+    object EditTask : NavRoutes(
+        "editTask?taskId={taskId}&routineId={routineId}"
+    ) {
+
+        fun addRoute(routineId: Int): String =
+            "editTask?routineId=$routineId"
+        fun editRoute(taskId: String, routineId: Int): String =
+            "editTask?taskId=$taskId&routineId=$routineId"
+    }
+
 }

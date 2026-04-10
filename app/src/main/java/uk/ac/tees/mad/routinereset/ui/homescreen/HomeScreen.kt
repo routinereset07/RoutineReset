@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -45,7 +46,6 @@ fun HomeScreen(
 
     val uiState by homeViewModel.homeUiState.collectAsStateWithLifecycle()
 
-
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -62,8 +62,8 @@ fun HomeScreen(
             )
 
             ProgressCard(
-                completed = 4,
-                total = 6,
+                completed = uiState.completedTask,
+                total = uiState.totalTask,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 16.dp)
@@ -88,17 +88,18 @@ fun HomeScreen(
             Text(
                 text = "Morning Routine",
                 fontSize = 20.sp,
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.weight(1f)
             )
 
             Text(
                 text = "view all",
                 modifier = Modifier
-                    .weight(1f)
                     .clickable{
                         homeViewModel.onMorningExpand()
                     },
-                textAlign = TextAlign.End
+                textAlign = TextAlign.End,
+                fontWeight = FontWeight.SemiBold
             )
         }
             RoutineCard(
@@ -106,6 +107,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
+                    //.weight(0.8f),
                 isExpanded = uiState.isMorningRoutineExpanded,
                 onCheckBoxClick = homeViewModel::onToggleRoutine
             )
@@ -134,17 +136,19 @@ fun HomeScreen(
                 Text(
                     text = "Evening Routine",
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
+                  modifier = Modifier.weight(1f),
+
                 )
 
                 Text(
                     text = "view all",
                     modifier = Modifier
-                        .weight(1f)
                         .clickable {
                            homeViewModel.onEveningExpand()
                         },
-                    textAlign = TextAlign.End
+                    textAlign = TextAlign.End,
+                    fontWeight = FontWeight.SemiBold
 
                 )
             }
@@ -153,6 +157,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
+                   // .weight(1f),
                 isExpanded = uiState.isEveningRoutineExpanded,
                 onCheckBoxClick = homeViewModel::onToggleRoutine
             )
@@ -209,14 +214,13 @@ fun AddRoutineButton(
 
 
 
-//@Composable
-//@Preview(showBackground = true)
-//fun HomeScreenPreview() {
-//    HomeScreen(
-//        onEditRoutineClick = {
-//            //
-//        },
-//        onSettingClick = {},
-//        homeViewModel = viewModel()
-//    )
-//}
+@Composable
+@Preview(showBackground = true)
+fun HomeScreenPreview() {
+    HomeScreen(
+        onEditRoutineClick = {},
+        onSettingClick = {}
+    )
+}
+
+

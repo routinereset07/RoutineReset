@@ -1,5 +1,6 @@
 package uk.ac.tees.mad.routinereset.ui.loginscreen
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -8,9 +9,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import uk.ac.tees.mad.routinereset.di.AppModule
 import uk.ac.tees.mad.routinereset.domain.model.AuthResult
+import uk.ac.tees.mad.routinereset.preference.AppPreference
 
 class LoginViewModel : ViewModel(){
     private val authRepository = AppModule.authRepository
+    private val routineRepository = AppModule.routineRepository
     private val _loginUiState = MutableStateFlow(LoginUiState())
     val loginUiState = _loginUiState.asStateFlow()
 
@@ -67,6 +70,12 @@ class LoginViewModel : ViewModel(){
                 }
 
                 is AuthResult.Success -> {
+                    if (AppPreference.isFirstLaunch()) {
+                        Log.d("Login", "Fetching tasks for first launch")
+                        fetchAllTask()
+                        AppPreference.setFirstLaunchDone()
+                    }
+
                     _loginUiState.update {
                         it.copy(
                             isLoading = false,
@@ -90,6 +99,10 @@ class LoginViewModel : ViewModel(){
         return email.isNotBlank() &&
                 android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() &&
                 password.length >= 8
+    }
+
+    private suspend fun fetchAllTask() {
+        routineRepository.fetchAllTasks()
     }
 
 }
