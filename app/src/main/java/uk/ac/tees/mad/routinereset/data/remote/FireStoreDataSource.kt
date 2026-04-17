@@ -1,11 +1,9 @@
 package uk.ac.tees.mad.routinereset.data.remote
 
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import uk.ac.tees.mad.routinereset.data.local.RoutineTaskEntity
-import uk.ac.tees.mad.routinereset.preference.AppPreference
 
 class RoutineRemoteDataSource(
     private val firestore: FirebaseFirestore,
@@ -98,7 +96,6 @@ class RoutineRemoteDataSource(
             .await()
             .toObjects(RoutineTaskEntity::class.java)
     }
-
 
     suspend fun resetAllTask() {
         val userDoc = firestore

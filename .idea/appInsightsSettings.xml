@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="uk.ac.tees.mad.routinereset" />
+                  <option name="mobileSdkAppId" value="1:405017319349:android:3f3c4bd6225875e3902bfc" />
+                  <option name="projectId" value="routinereset-46568" />
+                  <option name="projectNumber" value="405017319349" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

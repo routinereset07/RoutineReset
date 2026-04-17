@@ -18,7 +18,6 @@ class HomeViewModel(private val routineRepository: RoutineRepository = AppModule
         fetchAllRoutines()
     }
 
-
     fun fetchAllRoutines(){
         viewModelScope.launch {
          routineRepository
@@ -35,8 +34,8 @@ class HomeViewModel(private val routineRepository: RoutineRepository = AppModule
                          totalTask = routines.size
                      )
                    }
-                 }
              }
+        }
     }
 
 

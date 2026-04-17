@@ -4,7 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.services)
     id("kotlin-parcelize")
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
+
 }
 
 android {
@@ -73,12 +74,11 @@ dependencies {
     implementation ("androidx.compose.animation:animation:1.6.8")
 
 
-
-
-    //room database--
-    implementation ("androidx.room:room-runtime:2.8.4")
-    kapt ("androidx.room:room-compiler:2.8.4")
+    implementation("androidx.room:room-runtime:2.8.4")
     implementation("androidx.room:room-ktx:2.8.4")
+    ksp("androidx.room:room-compiler:2.8.4")
+
+
 
     //workmanager
     implementation(libs.androidx.work.runtime.ktx)
