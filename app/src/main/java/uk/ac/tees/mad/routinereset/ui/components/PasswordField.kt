@@ -24,9 +24,9 @@ fun PasswordField(
     modifier: Modifier
 ) {
     val iconRes = if (passwordVisible)
-        R.drawable.outline_visibility
+        R.drawable.eye
     else
-        R.drawable.outline_visibility_off
+        R.drawable.invisible
 
     OutlinedTextField(
         value = password,
